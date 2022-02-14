@@ -18,10 +18,10 @@ export class AppComponent {
   // Agora client options
   options = {
     appid: '9e17cc4e397e4d288d27abc2824354ae',
-    channel: 'livechannel',
+    channel: 'demo',
     uid: null,
     token:
-      '0069e17cc4e397e4d288d27abc2824354aeIABXI3voTUJMvlrDwIxxEBs60GDQ1I0O7p8yrAXa0Q4W1BDfnDgAAAAAEADL5xHfvp4IYgEAAQC+nghi',
+      '0069e17cc4e397e4d288d27abc2824354aeIAAgVmMggRdSivYNcm0VAwhoG3CewdNTwyqrvevplnp+cqDfQtYAAAAAEADL5xHfraYLYgEAAQCspgti',
     role: 'audience', // host or audience
     audienceLatency: 2,
   };
@@ -34,15 +34,7 @@ export class AppComponent {
     console.log('called in start!!!!!!!!!!!!!!', this.options.role);
     try {
       await this.join();
-      // if (this.options.role === 'host') {
-      //   // $("#success-alert a").attr("href", `index.html?appid=${options.appid}&channel=${options.channel}&token=${options.token}`);
-      //   // if (this.options.token) {
-      //   //     $("#success-alert-with-token").css("display", "block");
-      //   // } else {
-      //   //     $("#success-alert a").attr("href", `index.html?appid=${options.appid}&channel=${options.channel}&token=${options.token}`);
-      //   //     $("#success-alert").css("display", "block");
-      //   // }
-      // }
+
     } catch (error) {
       console.error(error);
     } finally {
@@ -55,10 +47,12 @@ export class AppComponent {
       this.client.setClientRole(this.options.role, {
         level: this.options.audienceLatency,
       });
+
       // add event listener to play remote tracks when remote user publishs.
       this.client.on('user-published', this.handleUserPublished);
       this.client.on('user-unpublished', this.handleUserUnpublished);
-      console.log('called in join!!!!!!!!!!!!!!');
+      console.log('called in join!!!!!!!!!!!!!!', this.client);
+      this.client1 = this.client;
     } else {
       //this.client.setClientRole('host');
     }
@@ -143,7 +137,7 @@ export class AppComponent {
     const id = user.uid;
     //this.uid = user.uid;
     console.log('handle user publish has been called!!!!!!!!!!!!', user, id);
-    this.remoteUsers[id] = user;
+    this.remoteUsers[user.uid] = user;
     this.hello(user, mediaType);
     console.log(
       'handle user publish has been ended!!!!!!!!!!!!',
@@ -152,6 +146,7 @@ export class AppComponent {
       mediaType
     );
   }
+
   handleUserUnpublished(user, mediaType) {
     if (mediaType === 'video') {
       const id = user.uid;
