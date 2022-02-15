@@ -9,7 +9,10 @@ import AgoraRTC from 'agora-rtc-sdk-ng';
 export class AppComponent {
   name = 'Angular ' + VERSION.major;
   uid;
-  readonly userclient = AgoraRTC.createClient({ mode: 'live', codec: 'vp8' });
+  readonly userclient = AgoraRTC.createClient({
+    mode: 'live',
+    codec: 'vp8',
+  });
   localTracks = {
     videoTrack: null,
     audioTrack: null,
@@ -19,9 +22,9 @@ export class AppComponent {
   options = {
     appid: '9e17cc4e397e4d288d27abc2824354ae',
     channel: 'demo',
-    uid: null,
+    uid: 123456,
     token:
-      '0069e17cc4e397e4d288d27abc2824354aeIAAgVmMggRdSivYNcm0VAwhoG3CewdNTwyqrvevplnp+cqDfQtYAAAAAEADL5xHfraYLYgEAAQCspgti',
+      '0069e17cc4e397e4d288d27abc2824354aeIADt9CsdW1JGJVp1rK1yiqfAt2hHTRMfcf5JtBVYo12g5qDfQtYAAAAAEAAWylBU3PoMYgEAAQDb+gxi',
     role: 'audience', // host or audience
     audienceLatency: 2,
   };
@@ -64,18 +67,18 @@ export class AppComponent {
     );
     console.log('the client has joined!!!!!!!!!!', this.client);
     console.log('the other client is!!!!!!!!!!', this.client1);
-    console.log('the read only client is!!!!!!!!!!', this.userclient);
-    if (this.options.role === 'host') {
-      // create local audio and video tracks
-      this.localTracks.audioTrack = await AgoraRTC.createMicrophoneAudioTrack();
-      this.localTracks.videoTrack = await AgoraRTC.createCameraVideoTrack();
-      // play local video track
-      this.localTracks.videoTrack.play('localplayer');
-      this.playerName = this.options.uid;
-      // publish local tracks to channel
-      await this.client.publish(Object.values(this.localTracks));
-      console.log('publish success!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
-    }
+    console.log('the read only client is!!!!!!!!!!');
+    // if (this.options.role === 'host') {
+    //   // create local audio and video tracks
+    //   this.localTracks.audioTrack = await AgoraRTC.createMicrophoneAudioTrack();
+    //   this.localTracks.videoTrack = await AgoraRTC.createCameraVideoTrack();
+    //   // play local video track
+    //   this.localTracks.videoTrack.play('localplayer');
+    //   this.playerName = this.options.uid;
+    //   // publish local tracks to channel
+    //   await this.client.publish(Object.values(this.localTracks));
+    //   console.log('publish success!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
+    // }
   }
 
   async leave() {
