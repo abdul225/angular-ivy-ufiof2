@@ -1,5 +1,5 @@
 import { Component, VERSION } from '@angular/core';
-import AgoraRTC, { ClientConfig } from 'agora-rtc-sdk-ng';
+import AgoraRTC from 'agora-rtc-sdk-ng';
 
 @Component({
   selector: 'my-app',
@@ -9,7 +9,7 @@ import AgoraRTC, { ClientConfig } from 'agora-rtc-sdk-ng';
 export class AppComponent {
   name = 'Angular ' + VERSION.major;
   uid;
-
+  readonly userclient = AgoraRTC.createClient({ mode: 'live', codec: 'vp8' });
   localTracks = {
     videoTrack: null,
     audioTrack: null,
@@ -50,7 +50,7 @@ export class AppComponent {
       // add event listener to play remote tracks when remote user publishs.
       this.client.on('user-published', this.handleUserPublished);
       this.client.on('user-unpublished', this.handleUserUnpublished);
-      console.log('called in join!!!!!!!!!!!!!!', this.client);
+
       this.client1 = this.client;
     } else {
       this.client.setClientRole('host');
@@ -62,7 +62,9 @@ export class AppComponent {
       this.options.token || null,
       this.options.uid || null
     );
-
+    console.log('the client has joined!!!!!!!!!!', this.client);
+    console.log('the other client is!!!!!!!!!!', this.client1);
+    console.log('the read only client is!!!!!!!!!!', this.userclient);
     if (this.options.role === 'host') {
       // create local audio and video tracks
       this.localTracks.audioTrack = await AgoraRTC.createMicrophoneAudioTrack();
@@ -101,13 +103,6 @@ export class AppComponent {
   }
 
   async hello(user, mediaType) {
-    console.log('subscribe called!!!!!!!!!!!!!!!!!!!!!');
-    this.uid = user.uid;
-    this.playerId = 'player-' + this.uid;
-    console.log('subscribe called!!!!!!!!!!!!!!!!!!!!!', this.client);
-    // subscribe to a remote user
-    await this.client.subscribe(user, mediaType);
-
     if (mediaType === 'video') {
       console.log(
         'the player id is!!!!!!!!!!!!!!!!!!!!!!!!!!!!! ',
@@ -128,14 +123,37 @@ export class AppComponent {
     const id = user.uid;
     //this.uid = user.uid;
     console.log('handle user publish has been called!!!!!!!!!!!!', user, id);
+    console.log(
+      'the read only client in handle user is!!!!!!!!!!',
+      this.userclient
+    );
     this.remoteUsers[user.uid] = user;
-    console.log('subscribe called!!!!!!!!!!!!!!!!!!!!!');
+    console.log(
+      'subscribe called!!!!!!!!!!!!!!!!!!!!!',
+      this.client,
+      this.client1
+    );
+    this.client.subscribe(user, mediaType);
     console.log(
       'handle user publish has been ended!!!!!!!!!!!!',
       id,
       user,
       mediaType
     );
+    if (mediaType === 'video') {
+      console.log(
+        'the player id is!!!!!!!!!!!!!!!!!!!!!!!!!!!!! ',
+        this.playerId
+      );
+      user.videoTrack.play(`azeem`, { fit: 'contain' });
+    }
+    if (mediaType === 'audio') {
+      console.log(
+        'the player id is!!!!!!!!!!!!!!!!!!!!!!!!!!!!! ',
+        this.playerId
+      );
+      user.audioTrack.play();
+    }
   }
 
   handleUserUnpublished(user, mediaType) {
