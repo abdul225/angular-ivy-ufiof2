@@ -34,7 +34,6 @@ export class AppComponent {
     console.log('called in start!!!!!!!!!!!!!!', this.options.role);
     try {
       await this.join();
-
     } catch (error) {
       console.error(error);
     } finally {
@@ -54,7 +53,7 @@ export class AppComponent {
       console.log('called in join!!!!!!!!!!!!!!', this.client);
       this.client1 = this.client;
     } else {
-      //this.client.setClientRole('host');
+      this.client.setClientRole('host');
     }
     // join the channel
     this.options.uid = await this.client.join(
@@ -101,7 +100,7 @@ export class AppComponent {
     console.log('client leaves channel success');
   }
 
-  async hello(user: any, mediaType: any) {
+  async hello(user, mediaType) {
     console.log('subscribe called!!!!!!!!!!!!!!!!!!!!!');
     this.uid = user.uid;
     this.playerId = 'player-' + this.uid;
@@ -110,14 +109,6 @@ export class AppComponent {
     await this.client.subscribe(user, mediaType);
 
     if (mediaType === 'video') {
-      //   const player = $(`
-      //   <div id="player-wrapper-${uid}">
-      //     <p class="player-name">remoteUser(${uid})</p>
-      //     <div id="player-${uid}" class="player"></div>
-      //   </div>
-      // `);
-      // $('#remote-playerlist').append(player);
-
       console.log(
         'the player id is!!!!!!!!!!!!!!!!!!!!!!!!!!!!! ',
         this.playerId
@@ -138,7 +129,7 @@ export class AppComponent {
     //this.uid = user.uid;
     console.log('handle user publish has been called!!!!!!!!!!!!', user, id);
     this.remoteUsers[user.uid] = user;
-    this.hello(user, mediaType);
+    console.log('subscribe called!!!!!!!!!!!!!!!!!!!!!');
     console.log(
       'handle user publish has been ended!!!!!!!!!!!!',
       id,
