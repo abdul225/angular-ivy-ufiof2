@@ -20,11 +20,11 @@ export class AppComponent {
   remoteUsers = {};
   // Agora client options
   options = {
-    appid: '9e17cc4e397e4d288d27abc2824354ae',
+    appid: '',
     channel: 'demo',
     uid: 123456,
     token:
-      '0069e17cc4e397e4d288d27abc2824354aeIADt9CsdW1JGJVp1rK1yiqfAt2hHTRMfcf5JtBVYo12g5qDfQtYAAAAAEAAWylBU3PoMYgEAAQDb+gxi',
+      '',
     role: 'audience', // host or audience
     audienceLatency: 2,
   };
